@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table Summarizer</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Table Summarizer</h1>
+    <!-- <textarea id="tableInput" rows="10" cols="50" placeholder="Paste your HTML table here"></textarea> -->
+    <br>
+    <table id="tableInput" class="table table-striped table-bordered form-inline table-responsive dataTable" width="100%" role="grid" style="width: 100%;"><thead><tr role="row"><th class="sorting_disabled column0 numeric" rowspan="1" colspan="1" style="width: 76px;"></th><th class="sorting_disabled column1 numeric" rowspan="1" colspan="1" style="width: 71px;">#Tows</th><th class="sorting_disabled column2 numeric" rowspan="1" colspan="1" style="width: 79px;">Subhauler</th><th class="sorting_disabled column3 numeric" rowspan="1" colspan="1" style="width: 97px;">911 Subhauler</th><th class="sorting_disabled column4 numeric" rowspan="1" colspan="1" style="width: 71px;">CCRF</th><th class="sorting_disabled column5 numeric" rowspan="1" colspan="1" style="width: 71px;">911 CCRF</th><th class="sorting_disabled column6 numeric" rowspan="1" colspan="1" style="width: 79px;">TiB</th><th class="sorting_disabled column7 numeric" rowspan="1" colspan="1" style="width: 71px;">OTRR</th><th class="sorting_disabled column8 numeric" rowspan="1" colspan="1" style="width: 72px;">Flex</th></tr></thead><tbody><tr role="row" class="odd additionInfoWrapper"><td class="column0 numeric fee_label_text">#Tows</td><td class=" column1 numeric" style="color: rgb(108, 206, 255); cursor: pointer; font-weight: bold;">13,936</td><td class=" column2 numeric" style="color: rgb(108, 206, 255); cursor: pointer; font-weight: bold;">8,699</td><td class=" column3 numeric" style="color: rgb(108, 206, 255); cursor: pointer; font-weight: bold;">115</td><td class=" column4 numeric" style="color: rgb(108, 206, 255); cursor: pointer; font-weight: bold;">806</td><td class=" column5 numeric" style="color: rgb(108, 206, 255); cursor: pointer; font-weight: bold;">141</td><td class=" column6 numeric" style="color: rgb(108, 206, 255); cursor: pointer; font-weight: bold;">3,680</td><td class=" column7 numeric" style="color: rgb(108, 206, 255); cursor: pointer; font-weight: bold;">2</td><td class=" column8 numeric" style="color: rgb(108, 206, 255); cursor: pointer; font-weight: bold;">493</td></tr><tr role="row" class="even additionInfoWrapper"><td class="column0 numeric fee_label_text">Total Cost</td><td class=" column1 numeric">$1.3M</td><td class=" column2 numeric">$943,741</td><td class=" column3 numeric">$22,815</td><td class=" column4 numeric">$44,821</td><td class=" column5 numeric">$12,563</td><td class=" column6 numeric">$309,629</td><td class=" column7 numeric">$898</td><td class=" column8 numeric">$37,228</td></tr><tr role="row" class="odd additionInfoWrapper"><td class="column0 numeric fee_label_text">Avg CPC</td><td class=" column1 numeric">$101.97</td><td class=" column2 numeric">$108.49</td><td class=" column3 numeric">$198.39</td><td class=" column4 numeric">$55.61</td><td class=" column5 numeric">$89.10</td><td class=" column6 numeric">$84.14</td><td class=" column7 numeric">$449.38</td><td class=" column8 numeric">$75.51</td></tr><tr role="row" class="even additionInfoWrapper"><td class="column0 numeric fee_label_text">Avg Zone</td><td class=" column1 numeric">7.47</td><td class=" column2 numeric">10.28</td><td class=" column3 numeric">10.46</td><td class=" column4 numeric">10.91</td><td class=" column5 numeric">7.76</td><td class=" column6 numeric">6.92</td><td class=" column7 numeric">27.50</td><td class=" column8 numeric">16.40</td></tr></tbody></table>
+    <button id="summarizeBtn">Summarize</button>
+    <br>
+    <div id="summary"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#summarizeBtn').click(function() {
+                var tableHtml = $('#tableInput').text();
+                console.log(tableHtml);
+                $.ajax({
+                    url: 'http://localhost:8000',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({table: tableHtml}),
+                    success: function(response) {
+                        $('#summary').text(response.summary);
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                        $('#summary').text('An error occurred while summarizing the table.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
